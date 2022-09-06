@@ -233,31 +233,6 @@ contract StakedTLOS is ERC20, IERC4626 {
         return assets;
     }
 
-
-    /**
-     * @dev Internal conversion function (from assets to shares) to apply when the vault is empty.
-     *
-     * NOTE: Make sure to keep this function consistent with {_initialConvertToAssets} when overriding it.
-     */
-    function _initialConvertToShares(
-        uint256 assets,
-        Math.Rounding /*rounding*/
-    ) internal view virtual returns (uint256 shares) {
-        return assets;
-    }
-
-    /**
-     * @dev Internal conversion function (from shares to assets) to apply when the vault is empty.
-     *
-     * NOTE: Make sure to keep this function consistent with {_initialConvertToShares} when overriding it.
-     */
-    function _initialConvertToAssets(
-        uint256 shares,
-        Math.Rounding /*rounding*/
-    ) internal view virtual returns (uint256 assets) {
-        return shares;
-    }
-
     /**
      * @dev Internal convertion function (from assets to shares) with support for rounding direction
      *
@@ -268,7 +243,7 @@ contract StakedTLOS is ERC20, IERC4626 {
         uint256 supply = totalSupply();
         return
             (assets == 0 || supply == 0)
-                ? _initialConvertToShares(assets, direction)
+                ? assets.mulDiv(10**decimals(), 10**_asset.decimals(), direction)
                 : assets.mulDiv(supply, totalAssets() - toIgnore, direction);
     }
 
@@ -279,11 +254,7 @@ contract StakedTLOS is ERC20, IERC4626 {
         uint256 supply = totalSupply();
         return
             (supply == 0)
-                ? _initialConvertToAssets(shares, direction)
+                ? shares.mulDiv(10**_asset.decimals(), 10**decimals(), direction)
                 : shares.mulDiv(totalAssets(), supply, direction);
-    }
-
-    function _isVaultCollateralized() private view returns (bool) {
-        return totalAssets() > 0 || totalSupply() == 0;
     }
 }
