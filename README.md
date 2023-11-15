@@ -194,7 +194,7 @@ Withdraw assets to Telos Escrow contract
 
 __Testnet :__ 0xa9991E4daA44922D00a78B6D986cDf628d46C4DD
 
-__Mainnet :__ 0x98BD57444603C66b736Fd0AeFCBE494c8Ee32C71
+__Mainnet :__ 0xB4B01216a5Bc8F1C8A33CD990A1239030E60C905
 
 ### :: TelosEscrow
 
